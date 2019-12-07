@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import '../CSS/SignUp.css'
+import '../CSS/Form.css'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import firebase from '../FirebaseConfig'
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -26,6 +27,7 @@ export default class Register extends Component{
             password: ''
         };
         this.handleChange = this.handleChange.bind(this);
+        this.login = this.login.bind(this);
     }
   
     handleChange(event){
@@ -35,6 +37,20 @@ export default class Register extends Component{
         })
     }
 
+    login(){
+
+        firebase.auth().signInWithEmailAndPassword(this.state.emailid, this.state.password).then(() => {
+            this.props.history.push('/welcome');
+        })
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log('Error code : ' + errorCode); 
+            console.log('Error Msg : ' + errorMessage);
+            // ...
+          });
+    }
 
 
   render(){
@@ -46,7 +62,6 @@ export default class Register extends Component{
                         <Grid item xs={12}>
                             <TextField 
                             id="outlined-basic" 
-                            fullWidth
                             label="Username" 
                             variant="outlined" 
                             margin="dense"
@@ -82,9 +97,7 @@ export default class Register extends Component{
                             <Button 
                                 variant="contained" 
                                 color="primary" 
-                                onClick={()=>{
-                                    this.props.history.push('/welcome')
-                                }}
+                                onClick={this.login}
                             >
                             Next
                             </Button>

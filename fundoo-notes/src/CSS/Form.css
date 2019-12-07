@@ -1,0 +1,12 @@
+.container{
+  border: solid black;
+  margin: 10% 20%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.content{
+  display: flex;
+  justify-content: space-between;
+}

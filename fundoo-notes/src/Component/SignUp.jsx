@@ -1,22 +1,9 @@
 import React, {Component} from 'react';
-import '../CSS/SignUp.css'
+import '../CSS/Form.css'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import firebase from '../FirebaseConfig'
-
-const useStyles = makeStyles(theme => ({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200,
-    },
-  }));
+import firebase from '../FirebaseConfig';
+import Box from '@material-ui/core/Box'
 
 export default class Register extends Component{
   constructor(props){
@@ -30,6 +17,7 @@ export default class Register extends Component{
 
         };
         this.handleChange = this.handleChange.bind(this);
+        this.writeUserData = this.writeUserData.bind(this);
         
     }
 
@@ -46,111 +34,115 @@ export default class Register extends Component{
         })
     }
 
-    writeUserData =()=> {
-        firebase.database().ref('users/').push({
-          firstname: this.state.firstname,
-          lastname: this.state.lastname,
-          emailid: this.state.emailid,
-          password: this.state.password
+    writeUserData(){
+        firebase.auth().createUserWithEmailAndPassword(this.state.emailid, this.state.password).then(()=>{
+            firebase.database().ref('users/').push({
+                firstname: this.state.firstname,
+                lastname: this.state.lastname,
+                emailid: this.state.emailid,
+                password: this.state.password
+            })
+            this.props.history.push('/');
+        })
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log('Error code : ' + errorCode);
+            console.log('Error Msg : ' + errorMessage);
+            // ...
         });
-      }
-
-    // a=()=>{
-    //     alert('hello ' + this.state.firstname);
-        
-    // }
+    }
 
   render(){
       return(
-            <div className="Login" style={{ width: '100%' }}>
-            <form>
-                <div>
-                
-                    <Grid container spacing={2}  >
-                        <Grid item xs={6} >
+            <div>
+                <form>
+                    <Box border={1}> 
+
+                        <Box>
+                            <Box>
+                                <TextField 
+                                    id="outlined-basic" 
+                                    label="First name" 
+                                    variant="outlined" 
+                                    margin="dense"
+                                    value={this.state.firstname} 
+                                    onChange={this.handleChange}
+                                    name="firstname"
+                                />
+                            </Box>
+                            <Box>
+                                <TextField 
+                                    id="outlined-basic" 
+                                    label="Last name" 
+                                    variant="outlined" 
+                                    value={this.state.lastname} 
+                                    onChange={this.handleChange}
+                                    name="lastname"
+                                    margin="dense"
+                                />
+                            </Box>
+                        </Box>
+
+                        <Box>
                             <TextField 
                                 id="outlined-basic" 
-                                label="First name" 
+                                fullWidth
+                                label="Email" 
                                 variant="outlined" 
-                                margin="dense"
-                                value={this.state.firstname} 
+                                value={this.state.username} 
                                 onChange={this.handleChange}
-                                name="firstname"
-                                className={useStyles.textField} 
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField 
-                                id="outlined-basic" 
-                                label="Last name" 
-                                variant="outlined" 
-                                value={this.state.lastname} 
-                                onChange={this.handleChange}
-                                name="lastname"
+                                name="emailid"
                                 margin="dense"
-                                className={useStyles.textField}
                             />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={1}>    
-                        <Grid item xs={12}>
-                            <TextField 
-                            id="outlined-basic" 
-                            fullWidth
-                            label="Email" 
-                            variant="outlined" 
-                            value={this.state.username} 
-                            onChange={this.handleChange}
-                            name="emailid"
-                            margin="dense"
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <TextField 
-                                id="outlined-basic" 
-                                label="Password" 
-                                variant="outlined" 
-                                margin="dense"
-                                value={this.state.password} 
-                                onChange={this.handleChange}
-                                name="password"
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField 
-                                id="outlined-basic" 
-                                label="Confirm"
-                                variant="outlined" 
-                                margin="dense"
-                                value={this.state.comfirmpassword} 
-                                onChange={this.handleChange}
-                                name="comfirmpassword"
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                        <Button variant="contained" 
-                            onClick={()=>{
-                                this.props.history.push('/')}}>
-                        Sign in instead
-                        </Button>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Button 
-                                variant="contained" 
-                                color="primary" 
-                                onClick={this.writeUserData}
-                            >
-                            Next
-                            </Button>
-                        </Grid>
-                    </Grid>
-                
-                </div>
-            </form>
+                        </Box>
+
+                        <Box>
+                            <Box>
+                                <TextField 
+                                    id="outlined-basic" 
+                                    label="Password" 
+                                    variant="outlined" 
+                                    margin="dense"
+                                    value={this.state.password} 
+                                    onChange={this.handleChange}
+                                    name="password"
+                                />
+                            </Box>
+                            <Box>
+                                <TextField 
+                                    id="outlined-basic" 
+                                    label="Confirm"
+                                    variant="outlined" 
+                                    margin="dense"
+                                    value={this.state.comfirmpassword} 
+                                    onChange={this.handleChange}
+                                    name="comfirmpassword"
+                                />
+                            </Box>
+                        </Box>
+
+                        <Box>
+                            <Box>
+                                <Button variant="contained" 
+                                    onClick={()=>{
+                                        this.props.history.push('/')}}>
+                                Sign in instead
+                                </Button>
+                            </Box>
+                            <Box>
+                                <Button 
+                                        variant="contained" 
+                                        color="primary" 
+                                        onClick={this.writeUserData}>
+                                Next
+                                </Button>
+                            </Box>
+                        </Box>
+
+                    </Box>
+                </form>
             </div>
            
       );
