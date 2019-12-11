@@ -2,7 +2,8 @@ import  React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SignIn from './Component/SignIn';
 import SignUp from './Component/SignUp';
-import Welcome from "./Component/Welcome";
+import ForgotPassword from "./Component/ForgotPassword";
+import Dashboard from './Component/Dashboard';
 
 function Routing(){
     return(
@@ -10,7 +11,8 @@ function Routing(){
             <Switch>
                 <Route path='/' exact component={SignIn} />
                 <Route path='/signup' component={SignUp} />
-                <Route path='/welcome' component={Welcome} />
+                <Route path='/forgotpassword' component={ForgotPassword} />
+                <Route path='/dashboard' component={Dashboard} />
             </Switch>
         </Router>
     );

@@ -1,5 +1,19 @@
-body{
-  background-color: rgb(254, 254, 254);
+#loader{
+  width:50%;
+  background-color: white;
+  margin-left: 17%;
+  position: fixed;
+  border: 1px solid white;
+  border-radius: 8px;
+  margin-top: 0.1em;
+}
+
+#load{
+  width: 0;
+  height: 0.2em;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+  background-color: dodgerblue;
 }
 
 .main-container{
@@ -64,6 +78,10 @@ body{
 
 .item2{
   width: 94%;
+}
+
+.item3{
+  width: 97%;
 }
 
 .item4{
@@ -142,9 +160,27 @@ body{
 }
 
 @media (max-width: 700px){
+  #loader{
+    width: 20em;
+    background-color: white;
+    position: fixed;
+    margin: 0.1em;
+    border: 1px solid white;
+    border-radius: 8px;
+  }
+  
+  #load{
+    width: 0;
+    height: 0.2em;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    background-color: dodgerblue;
+  }
   .main-container{
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     padding: 3% 5%;
     border: 1px solid white;
@@ -201,7 +237,7 @@ body{
   }
   
   .item5{
-    width: 230px;
+    width: 220px;
   }
 
 }

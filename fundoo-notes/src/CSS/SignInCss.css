@@ -1,5 +1,19 @@
-body{
-    background-color: rgb(254, 254, 254);
+#loader1{
+    width:31%;
+    background-color: white;
+    margin-left: -2.5em;
+    position: fixed;
+    border: 1px solid white;
+    border-radius: 8px;
+    margin-top: -18em;
+}
+  
+#load1{
+    width: 0;
+    height: 0.2em;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    background-color: dodgerblue;
 }
 
 .mainContainer{
@@ -40,6 +54,23 @@ body{
 }
 
 @media (max-width: 1200px){
+    #loader1{
+        width:59%;
+        background-color: white;
+        margin-left: -2em;
+        position: absolute;
+        border: 1px solid white;
+        border-radius: 8px;
+        margin-top: -18em;
+      }
+      
+    #load1{
+        width: 0;
+        height: 0.2em;
+        border: 1px solid lightgrey;
+        border-radius: 8px;
+        background-color: dodgerblue;
+    }
     .mainContainer{
         display: flex;
         justify-content: center;
@@ -79,6 +110,23 @@ body{
 }
   
   @media (max-width: 700px){
+    #loader1{
+        width:98%;
+        background-color: white;
+        margin-left: -0.6em;
+        position: absolute;
+        border: 1px solid white;
+        border-radius: 8px;
+        margin-top: -16.5em;
+      }
+      
+    #load1{
+        width: 0;
+        height: 0.2em;
+        border: 1px solid lightgrey;
+        border-radius: 8px;
+        background-color: dodgerblue;
+    }
     .mainContainer{
         display: flex;
         justify-content: center;

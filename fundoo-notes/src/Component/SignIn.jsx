@@ -35,13 +35,16 @@ export default class Register extends Component{
 
     submitUserRegistrationForm(event) {
         event.preventDefault();
+        
         if (this.validateForm()) {
+            
             this.setState({
                 [event.target.name] : event.target.value,
                 [event.target.formvalid]:  !event.target.formvalid
             })
-            alert("You have Login Successfully !");
-        }
+            this.move();
+            this.login();
+        }        
     }
 
     validateForm=()=> {
@@ -78,7 +81,6 @@ export default class Register extends Component{
         this.setState({
           errors: errors
         });
-        
         return formIsValid;
     }
 
@@ -91,23 +93,62 @@ export default class Register extends Component{
     };
 
     login(){
+        let errors = {};
         firebase.auth().signInWithEmailAndPassword(this.state.emailid, this.state.password).then(() => {
-            this.props.history.push('/welcome');
+            this.props.history.push('/dashboard');
         })
-        .catch(function(error) {
+        .catch((error) => {
             // Handle Errors here
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log('Error code : ' + errorCode); 
             console.log('Error Msg : ' + errorMessage);
-            // ...
+            if (errorCode === 'auth/user-not-found'){
+                let msg = "This email id is not register with Fundoo Account"
+                errors["emailid"] = msg;
+                this.setState({
+                    errors: errors
+                });
+            }
+            else{
+                let msg = "You have entered wrong password"
+                errors["password"] = msg;
+                this.setState({
+                    errors: errors
+                });
+            }
+              
         });
     }
+
+    move = () => {
+        let i=0;
+        if (i === 0) {
+          i = 1;
+          let elem = document.getElementById("load1");
+          let elem2 = document.getElementById("loader1");
+          elem2.style.backgroundColor = 'lightgray';
+          let width = 1;
+          let id = setInterval(frame, 10);
+          function frame() {
+            if (width >= 100) {
+              clearInterval(id);
+              i = 0;
+            } else {
+              width++;
+              elem.style.width = width + "%";
+            }
+          }
+        }
+      }
 
     render(){
         return(
             <div className="mainContainer">
-                <form onSubmit={this.submitUserRegistrationForm}> 
+                <div id="loader1">
+                    <div id="load1"></div>
+                </div>
+                <form> 
                     <div className="titleContainer"> 
                         <div className="title1">
                             <span style={{color: '#4285F4'}}>F</span>
@@ -140,13 +181,12 @@ export default class Register extends Component{
                         helperText={this.state.errors.emailid}
                     />
                     </div>
-                    <div style={{marginTop: 10}, {marginBottom: 10}}>
-                        <Button color="primary">
-                            Forgot email?
-                        </Button>
-                    </div>
                     <div>
-                        <FormControl variant="outlined" fullWidth error={this.state.errors.password}>
+                        <FormControl 
+                            variant="outlined" 
+                            fullWidth 
+                            error={this.state.errors.password}
+                            style={{marginTop: 30}} >
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password"
@@ -172,7 +212,10 @@ export default class Register extends Component{
                         </FormControl>
                     </div>
                     <div>
-                        <Button color="primary">
+                        <Button color="primary"
+                            size="large"
+                            onClick={()=>{
+                            this.props.history.push('/forgotpassword')}}>
                             Forgot password?
                         </Button>
                     </div>
@@ -180,7 +223,6 @@ export default class Register extends Component{
                         <div>
                             <Button color="primary"
                                 size="large"
-                                type="submit"
                                 onClick={()=>{
                                     this.props.history.push('/signup')}}>
                                 Create Account
@@ -191,8 +233,7 @@ export default class Register extends Component{
                                 variant="contained" 
                                 color="primary" 
                                 size="large"
-                                type="submit"
-                                onClick={this.login}
+                                onClick={this.submitUserRegistrationForm}
                             >
                             Next
                             </Button>
